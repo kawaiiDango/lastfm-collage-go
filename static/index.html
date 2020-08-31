@@ -1,0 +1,105 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>LastFM Collage Generator</title>
+        <style>
+            body, input, select {
+                background: black;
+                color: white;
+                text-align: center;
+            }
+            input, select {
+                padding: 8px;
+                border-radius: 25px;
+            }
+            h3 {
+                padding: 0 20px 0 20px;
+            }
+            .container {
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                line-height: 1.7;
+            }
+            .fullwidth {
+                width: 100%;
+            }
+            .row {
+                display: flex;
+            }
+            .col {
+                flex: 1;
+            }
+            .addHeight {
+                line-height: 2.2;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <form method="POST" action="collage">
+                <h3>LastFM Collage Generator</h3>
+                <input name="username" type="text" placeholder="Username" class="fullwidth" />
+                <br>
+                <div class="row">
+                    <select name="rows" class="col">
+                        <option value="1" disabled>Rows</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3" selected>3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                    </select>
+                    <div class="col addHeight">×</div>
+                    <select name="cols" class="col">
+                        <option value="1" disabled>Cols</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3" selected>3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                    </select>
+                </div>
+                <select name="period" class="fullwidth">
+                    <option value="overall" disabled selected>Period</option>
+                    <option value="7day">Last 7 Days</option>
+                    <option value="1month">Last Month</option>
+                    <option value="3month">Last 3 Months</option>
+                    <option value="6month">Last 6 Months</option>
+                    <option value="12month">Last 12 Months</option>
+                    <option value="overall" selected>Overall</option>
+                </select>
+                <br>
+                <input type="radio" id="albums" name="type" value="album">
+                <label for="albums">Albums</label>
+                <input type="radio" id="artists" name="type" value="artist" checked>
+                <label for="artists">Artists</label>
+                <input type="radio" id="tracks" name="type" value="track">
+                <label for="tracks">Tracks</label>
+                <br>
+                <input type="checkbox" id="captions" name="info" value="1" checked>
+                <label for="captions">Captions</label>
+                <br>
+                <input type="checkbox" id="playcount" name="playcount" value="1" checked>
+                <label for="playcount">Play count</label>
+                <br>
+                <input type="hidden" name="webp" value="1" />
+                <input type="submit" name="submit" value="Go!" class="fullwidth" />
+            </form>
+        </div>
+    </body>
+</html>
