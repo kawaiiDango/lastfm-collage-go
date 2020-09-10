@@ -179,7 +179,7 @@ func fetchTileData(username string, rows int, cols int, period string, collageTy
 			}
 
 			playCountText := e.ChildText(".chartlist-count-bar-value")
-			playCount, _ := strconv.Atoi(strings.Split(playCountText, " ")[0])
+			playCount := parseHumanNumber(strings.Split(playCountText, " ")[0])
 
 			tiles = append(tiles, tile{
 				artist:    artist,
