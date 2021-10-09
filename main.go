@@ -5,6 +5,7 @@ import (
 	"image"
 	"image/color"
 	"image/draw"
+	"image/gif"
 	"image/jpeg"
 	"io/ioutil"
 	"math"
@@ -42,7 +43,6 @@ var (
 			return http.ErrUseLastResponse
 		},
 	}
-	//prevent animated gif redirects as they may be too large. gif.Decode() reads the entire stream even if it returns the first frame
 )
 
 type tile struct {
@@ -84,7 +84,7 @@ func main() {
 
 			tiles := fetchTileData(username, rows, cols, period, collageType)
 			if tiles == nil {
-				rgba = drawError("Error fetching info or invalid username")
+				rgba = drawError("Error fetching info")
 			} else {
 				fetchImages(tiles)
 				rgba = drawCollage(tiles, collageType, rows, cols, info, playCount)
@@ -223,8 +223,25 @@ func fetchOneImage(tile *tile, wg *sync.WaitGroup) {
 		defer resp.Body.Close()
 	}
 	if resp.StatusCode == 200 {
-		img, err := webp.Decode(resp.Body)
-		if err == nil {
+		var img image.Image
+		var err error
+
+		if contentTypes, ok := resp.Header["Content-Type"]; ok {
+			contentType := contentTypes[0]
+
+			switch contentType {
+			case "image/webp":
+				img, err = webp.Decode(resp.Body)
+			case "image/gif":
+				img, err = gif.Decode(resp.Body)
+				// gif.Decode() reads the entire stream even if it returns the first frame
+
+			case "image/jpeg":
+				img, err = jpeg.Decode(resp.Body)
+			}
+		}
+
+		if err == nil && img != nil {
 			tile.img = &img
 		} else {
 			fmt.Println(err, tile.imgURL)
@@ -319,7 +336,7 @@ func drawTextWithStroke(ctx *freetype.Context, x int, y int, fontSize float64, s
 func toWebp(url string) string {
 	newURL := strings.Replace(url, ".jpg", ".webp", 1)
 	newURL = strings.Replace(newURL, ".png", ".webp", 1)
-	newURL = strings.Replace(newURL, ".gif", ".webp", 1)
+	// newURL = strings.Replace(newURL, ".gif", ".webp", 1)
 	return newURL
 }
 
