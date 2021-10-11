@@ -40,6 +40,9 @@ var (
 	)
 	httpClient = &http.Client{
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			if strings.HasSuffix(req.URL.Path, ".gif") {
+				return nil
+			}
 			return http.ErrUseLastResponse
 		},
 	}
